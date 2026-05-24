@@ -1,3 +1,7 @@
+/* Desktop Folders System Styles */
+@import url('./folderWindow.css');
+
+/* Rest of your existing CSS... */
 :root {
   --color-white: #fff;
   --color-white-100: rgba(255, 255, 255, 0.1);
