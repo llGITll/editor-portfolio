@@ -140,8 +140,8 @@ const projectsData = {
       id: 5,
       title: 'Voxel Institute Brand Campaign',
       description: 'Educational marketing video',
-      thumbnail: '',
-      video: '',
+      thumbnail: 'https://res.cloudinary.com/drpu4slkk/image/upload/v1781621851/Screenshot_2026-06-16_202717_cagjsv.png',
+      video: 'https://www.youtube.com/embed/uTcVCoN6_Pg',
       type: 'youtube'
     },
     {
