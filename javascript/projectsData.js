@@ -122,8 +122,8 @@ const projectsData = {
     },
     {
       id: 3,
-      title: 'HealthPlus Services Commercial',
-      description: 'Healthcare brand promotional video',
+      title: 'Embicon Event Recap 2026',
+      description: 'Professional event coverage showcasing presentations, team engagement, and organizational milestones.',  
       thumbnail: 'https://res.cloudinary.com/drpu4slkk/image/upload/v1781621121/imbicon_oo7zd7.png',
       video: 'https://www.youtube.com/embed/cLdzmsKOl6A',
       type: 'youtube'
