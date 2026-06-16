@@ -3,49 +3,42 @@
  * Manages video portfolio folders on the desktop
  * Creates folder icons and handles folder interactions
  */
-
 const desktopFoldersManager = {
   folders: [
-    {
-      id: 'motion-graphics',
-      name: 'Motion Graphics',
-      icon: '📹',
-      color: '#FF6B6B',
-      description: 'Dynamic animations and motion design'
+        {
+      id: 'brand-commercials',
+      name: 'Brand Reels',
+      icon: '🎬',
+      color: '#9b0000',
+      description: 'Commercial advertisement videos'
     },
     {
-      id: 'wedding-films',
-      name: 'Wedding Films',
+      id: 'wedding-teaser',
+      name: 'wedding-teaser',
       icon: '💍',
       color: '#FF69B4',
       description: 'Cinematic wedding cinematography'
     },
     {
-      id: 'reels-factory',
-      name: 'Reels Factory',
-      icon: '⚙️',
+      id: 'wedding-Highlight',
+      name: 'wedding-Highlight',
+      icon: '💍',
       color: '#4ECDC4',
       description: 'Short-form vertical content'
     },
+       
     {
-      id: 'brand-commercials',
-      name: 'Brand Commercials',
+      id: 'wedding-reel',
+      name: 'wedding-reel',
       icon: '🎬',
       color: '#45B7D1',
       description: 'Commercial advertisement videos'
     },
     {
-      id: 'anchoring',
-      name: 'Anchoring',
-      icon: '🎙️',
-      color: '#F7B731',
-      description: 'Host and presentation content'
-    },
-    {
-      id: 'case-studies',
-      name: 'Case Studies',
+      id: 'case-studies-soon',
+      name: 'case-studies-soon',
       icon: '📊',
-      color: '#5F27CD',
+      color: '#279ecd',
       description: 'Project portfolio case studies'
     }
   ],
