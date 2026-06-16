@@ -138,14 +138,6 @@ const projectsData = {
     },
     {
       id: 5,
-      title: 'Voxel Institute Brand Campaign',
-      description: 'Educational marketing video',
-      thumbnail: 'https://res.cloudinary.com/drpu4slkk/image/upload/v1781621851/Screenshot_2026-06-16_202717_cagjsv.png',
-      video: 'https://www.youtube.com/embed/uTcVCoN6_Pg',
-      type: 'youtube'
-    },
-    {
-      id: 6,
       title: 'Popular Jewellers Collection Showcase',
       description: 'Promotional video featuring premium silver jewellery collections.',
       thumbnail: 'https://res.cloudinary.com/drpu4slkk/image/upload/v1781623064/WhatsApp_Image_2026-06-16_at_8.46.30_PM_m8pgek.jpg',
