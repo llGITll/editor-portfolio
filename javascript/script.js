@@ -1,3 +1,8 @@
+/**
+ * SCRIPT.JS - Desktop & App Management
+ * Fixed: Container now shows by default so folder windows are visible
+ */
+
 /********** ELEMENTS **********/
 const elements = {
   body: document.querySelector("body"),
@@ -170,12 +175,13 @@ function handleOpenLaunching() {
     launchpad.window.style.display = "block";
     elements.navbar.style.display = "none";
     launchpad.point.style.display = "block";
+    launchpad.container.style.display = "none";  // Hide container when launchpad opens
   } else {
     launchpad.window.style.display = "none";
     elements.navbar.style.display = "flex";
     launchpad.point.style.display = "none";
+    launchpad.container.style.display = "flex";  // Show container when launchpad closes (so folder windows are visible)
   }
-  launchpad.container.style.display = "none";
 }
 
 function handleLaunchpadSearch(e) {
@@ -201,6 +207,9 @@ function handleOpenCal_lunchpad() {
   launchpad.point.style.display = "none";
 }
 // Calculator app end
+
+// Initialize container as visible so folder windows work
+launchpad.container.style.display = "flex";
 
 handleopen_spotlight();
 handleOpenLaunching();
