@@ -1,43 +1,33 @@
 /**
  * DESKTOP FOLDERS MODULE
  * Manages video portfolio folders on the desktop
- * Creates folder icons and handles folder interactions
+ * Creates folder icons with standard macOS blue style
  */
 const desktopFoldersManager = {
   folders: [
-        {
+    {
       id: 'brand-commercials',
       name: 'Brand Reels',
-      icon: '🎬',
-      color: '#9b0000',
-      description: 'Commercial advertisement videos'
-    },
-      {
-      id: 'wedding-reel',
-      name: 'wedding-reel',
-      icon: '🎬',
-      color: '#45B7D1',
       description: 'Commercial advertisement videos'
     },
     {
       id: 'wedding-teaser',
       name: 'wedding-teaser',
-      icon: '💍',
-      color: '#FF69B4',
       description: 'Cinematic wedding cinematography'
     },
     {
       id: 'wedding-Highlight',
       name: 'wedding-Highlight',
-      icon: '💍',
-      color: '#4ECDC4',
       description: 'Short-form vertical content'
+    },
+    {
+      id: 'wedding-reel',
+      name: 'wedding-reel',
+      description: 'Commercial advertisement videos'
     },
     {
       id: 'case-studies-soon',
       name: 'case-studies-soon',
-      icon: '📊',
-      color: '#279ecd',
       description: 'Project portfolio case studies'
     }
   ],
@@ -62,20 +52,20 @@ const desktopFoldersManager = {
     this.setupFolderListeners();
   },
 
-  // Create folder icon element
+  // Create folder icon element with macOS style
   createFolderIcon(folder) {
     const container = document.getElementById('desktopFoldersContainer');
     const folderElement = document.createElement('div');
     folderElement.className = 'desktop-folder';
     folderElement.id = `folder-${folder.id}`;
     folderElement.setAttribute('data-folder-id', folder.id);
-    folderElement.style.setProperty('--folder-color', folder.color);
 
     folderElement.innerHTML = `
       <div class="desktop-folder__icon">
-        <div class="folder-visual">
+        <div class="macos-folder">
           <div class="folder-tab"></div>
           <div class="folder-body"></div>
+          <div class="folder-shine"></div>
         </div>
       </div>
       <div class="desktop-folder__label">
