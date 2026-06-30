@@ -47,7 +47,7 @@ body {
   height: 100vh;
   user-select: none;
   font-family: "Lexend", sans-serif;
-  background: url("../background/iridescence.jpg") center/cover no-repeat;
+  background: url("../background/Porfolio-wallpaper.png") center/cover no-repeat;
   overflow: hidden;
 }
 
@@ -69,7 +69,14 @@ body {
   left: 0;
   color: var(--color-white-900);
   box-shadow: 0 2px 10px var(--color-black-100);
-  background: linear-gradient(to right, #6e1438, #270598, #e54c2d);
+  background: linear-gradient(
+    90deg,
+    #08101f 0%,
+    #0b1830 20%,
+    #10264a 50%,
+    #12305c 75%,
+    #0e2245 100%
+);
   display: flex;
   align-items: center;
   justify-content: space-between;
