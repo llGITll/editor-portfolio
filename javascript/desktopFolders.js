@@ -12,6 +12,13 @@ const desktopFoldersManager = {
       color: '#9b0000',
       description: 'Commercial advertisement videos'
     },
+      {
+      id: 'wedding-reel',
+      name: 'wedding-reel',
+      icon: '🎬',
+      color: '#45B7D1',
+      description: 'Commercial advertisement videos'
+    },
     {
       id: 'wedding-teaser',
       name: 'wedding-teaser',
@@ -25,14 +32,6 @@ const desktopFoldersManager = {
       icon: '💍',
       color: '#4ECDC4',
       description: 'Short-form vertical content'
-    },
-       
-    {
-      id: 'wedding-reel',
-      name: 'wedding-reel',
-      icon: '🎬',
-      color: '#45B7D1',
-      description: 'Commercial advertisement videos'
     },
     {
       id: 'case-studies-soon',
@@ -134,7 +133,6 @@ const desktopFoldersManager = {
   }
 };
 
-// Initialize desktop folders when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  desktopFoldersManager.init();
-});
+// Initialize desktop folders immediately since DOM is ready
+// (This script loads after DOM parsing is complete, so DOMContentLoaded has already fired)
+desktopFoldersManager.init();
