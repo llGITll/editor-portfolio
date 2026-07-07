@@ -1,0 +1,372 @@
+/**
+ * iOS-INSPIRED MOBILE RESPONSIVE STYLES
+ * Triggered when screen width is < 768px and body has .mobile-mode class
+ */
+
+@media (max-width: 768px) {
+  body.mobile-mode {
+    cursor: default !important;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* Hide Desktop navbar & dock */
+  body.mobile-mode .navbar,
+  body.mobile-mode .dock {
+    display: none !important;
+  }
+
+  /* Show Mobile Status Bar */
+  .mobile-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 34px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 999;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+  }
+
+  .mobile-status-bar__left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mobile-status-bar__right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Grid Layout for Mobile Home Screen */
+  .mobile-folders-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px 10px;
+    padding: 60px 16px 120px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  /* Redesign Folders as App Icons */
+  body.mobile-mode .desktop-folder {
+    transform: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 4px;
+    gap: 6px;
+  }
+
+  body.mobile-mode .desktop-folder__icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  body.mobile-mode .desktop-folder:active .desktop-folder__icon {
+    transform: scale(0.9);
+  }
+
+  body.mobile-mode .macos-folder {
+    width: 32px;
+    height: 27px;
+  }
+
+  body.mobile-mode .folder-tab {
+    width: 16px;
+    height: 10px;
+  }
+
+  body.mobile-mode .folder-body {
+    top: 8px;
+    width: 32px;
+    height: 19px;
+  }
+
+  body.mobile-mode .folder-shine {
+    top: 9px;
+    width: 30px;
+    height: 4px;
+  }
+
+  body.mobile-mode .desktop-folder__label span {
+    font-size: 11px;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  /* Mobile App Drawer Dock (iOS Style) */
+  .mobile-dock {
+    display: flex !important;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    left: 5%;
+    width: 90%;
+    height: 84px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 28px;
+    z-index: 10;
+    box-sizing: border-box;
+    padding: 0 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-dock__icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-dock__icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  /* Mobile Full-Screen Windows */
+  body.mobile-mode .folder-window,
+  body.mobile-mode .window,
+  body.mobile-mode .calculator,
+  body.mobile-mode .note,
+  body.mobile-mode .terminal,
+  body.mobile-mode .maps {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    transform: translateY(100vh);
+    transition: transform 0.4s cubic-bezier(0.1, 0.76, 0.55, 0.94);
+    opacity: 1 !important;
+    z-index: 100 !important;
+    background: #121212 !important;
+    box-shadow: none !important;
+  }
+
+  /* Active/Open Fullscreen Apps */
+  body.mobile-mode .folder-window.opening,
+  body.mobile-mode .window.active-app,
+  body.mobile-mode .calculator.active-app,
+  body.mobile-mode .note.active-app,
+  body.mobile-mode .terminal.active-app,
+  body.mobile-mode .maps.active-app {
+    transform: translateY(0) !important;
+  }
+
+  /* Adjust window headers for mobile (safari style navigation) */
+  body.mobile-mode .folder-window__header,
+  body.mobile-mode .window__taskbar {
+    padding-top: 36px !important; /* spacing below status bar */
+    height: 76px;
+    background: #1a1a1a !important;
+    border-bottom: 1px solid #2d2d2d !important;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  body.mobile-mode .folder-window__controls,
+  body.mobile-mode .window__taskbar--actions {
+    order: -1;
+  }
+
+  /* Hide Minimize and Maximize on mobile, Keep Close as a Back arrow/button */
+  body.mobile-mode .minimize-btn,
+  body.mobile-mode .maximize-btn,
+  body.mobile-mode .backfull,
+  body.mobile-mode .full,
+  body.mobile-mode .backfull-note,
+  body.mobile-mode .full-note,
+  body.mobile-mode .backfull-map,
+  body.mobile-mode .full-map {
+    display: none !important;
+  }
+
+  body.mobile-mode .close-btn,
+  body.mobile-mode .close,
+  body.mobile-mode .close-note,
+  body.mobile-mode .close-map,
+  body.mobile-mode .close-cal {
+    width: 24px !important;
+    height: 24px !important;
+    background: transparent !important;
+    border: none !important;
+    position: relative;
+    cursor: pointer;
+  }
+
+  body.mobile-mode .close-btn::before,
+  body.mobile-mode .close::before,
+  body.mobile-mode .close-note::before,
+  body.mobile-mode .close-map::before,
+  body.mobile-mode .close-cal::before {
+    content: '\e5c4'; /* Material icon keyboard_backspace */
+    font-family: 'Material Icons';
+    color: #007ff7;
+    font-size: 24px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* App layouts for mobile */
+  body.mobile-mode .folder-window__title h2,
+  body.mobile-mode .window__taskbar--content h2 {
+    font-size: 16px !important;
+    color: #fff !important;
+  }
+
+  body.mobile-mode .projects-grid {
+    grid-template-columns: 1fr !important;
+    padding: 12px;
+  }
+
+  body.mobile-mode .project-card {
+    grid-template-columns: 100px 1fr !important;
+    background: #1e1e1e !important;
+    border-color: #2d2d2d !important;
+  }
+
+  body.mobile-mode .project-card__title {
+    font-size: 13px;
+  }
+
+  body.mobile-mode .project-card__description {
+    font-size: 11px;
+    -webkit-line-clamp: 2;
+  }
+
+  /* Interactive widgets and details */
+  body.mobile-mode .calculator {
+    display: flex;
+    flex-direction: column;
+    padding-top: 36px;
+    box-sizing: border-box;
+  }
+
+  body.mobile-mode .calculator__top {
+    flex-shrink: 0;
+    background: transparent;
+    padding: 20px;
+  }
+
+  body.mobile-mode .calculator__top--taskabr {
+    display: flex;
+    padding: 10px 0;
+  }
+
+  body.mobile-mode .calculator__top--output {
+    font-size: 64px !important;
+    text-align: right;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: white;
+  }
+
+  body.mobile-mode .calculator .input {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 12px;
+    padding: 20px;
+    flex-grow: 1;
+    background: #000;
+  }
+
+  body.mobile-mode .calculator .input button {
+    height: 72px;
+    border-radius: 50% !important;
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  /* Notes App Mobile layout */
+  body.mobile-mode .note .content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 76px);
+  }
+
+  body.mobile-mode .note .content__sidebar {
+    width: 100% !important;
+    height: 200px;
+    border-right: none !important;
+    border-bottom: 1px solid #2d2d2d;
+    background: #181818 !important;
+  }
+
+  body.mobile-mode .note .Parent__content--typing {
+    flex: 1;
+    background: #121212 !important;
+  }
+
+  body.mobile-mode .note textarea {
+    background: transparent !important;
+    color: #fff !important;
+    padding: 16px;
+    font-size: 16px;
+    height: 100%;
+  }
+
+  /* Terminal Mobile Layout */
+  body.mobile-mode .terminal_content {
+    height: calc(100vh - 76px);
+    background: #000 !important;
+    font-family: monospace;
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  /* Home indicator bar (iOS Style) */
+  .mobile-home-indicator {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+}
