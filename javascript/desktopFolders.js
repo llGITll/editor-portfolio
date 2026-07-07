@@ -8,26 +8,36 @@ const desktopFoldersManager = {
     {
       id: 'brand-commercials',
       name: 'Brand Reels',
+      icon: '💼',
+      color: '#007ff7',
       description: 'Commercial advertisement videos'
     },
     {
       id: 'wedding-teaser',
       name: 'wedding-teaser',
+      icon: '🎥',
+      color: '#ff5f57',
       description: 'Cinematic wedding cinematography'
     },
     {
       id: 'wedding-Highlight',
       name: 'wedding-Highlight',
+      icon: '⚡',
+      color: '#ffbd2e',
       description: 'Short-form vertical content'
     },
     {
       id: 'wedding-reel',
       name: 'wedding-reel',
-      description: 'Commercial advertisement videos'
+      icon: '🎞️',
+      color: '#28c940',
+      description: 'Wedding Reels and Stories'
     },
     {
       id: 'case-studies-soon',
       name: 'case-studies-soon',
+      icon: '📂',
+      color: '#9c5ffd',
       description: 'Project portfolio case studies'
     }
   ],

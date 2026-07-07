@@ -41,40 +41,40 @@ const projectsData = {
     // }
   ],
   
-  // 'wedding-Highlight': [
-  //   {
-  //     id: 1,
-  //     title: 'wedding-Highlight',
-  //     description: '15-second viral fashion reel',
-  //     thumbnail: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=300&h=200&fit=crop',
-  //     video: 'https://www.youtube.com/embed/BxV14h0kFs0',
-  //     type: 'youtube'
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Dance Challenge Edit',
-  //     description: 'High-energy dance compilation',
-  //     thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=200&fit=crop',
-  //     video: 'https://www.youtube.com/embed/j8ugNVXLz6E',
-  //     type: 'youtube'
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'Food Prep Aesthetic',
-  //     description: 'Satisfying cooking process video',
-  //     thumbnail: 'https://images.unsplash.com/photo-1495468595917-7ccc92183d63?w=300&h=200&fit=crop',
-  //     video: 'https://www.youtube.com/embed/ZVHMDkl0m6Y',
-  //     type: 'youtube'
-  //   },
-  //   {
-  //     id: 4,
-  //     title: 'Travel Vlog Snippet',
-  //     description: '30-second travel highlight',
-  //     thumbnail: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300&h=200&fit=crop',
-  //     video: 'https://www.youtube.com/embed/oFtkdywW_EM',
-  //     type: 'youtube'
-  //   }
-  // ],
+  'wedding-Highlight': [
+    {
+      id: 1,
+      title: 'wedding-Highlight',
+      description: '15-second viral fashion reel',
+      thumbnail: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=300&h=200&fit=crop',
+      video: 'https://www.youtube.com/embed/BxV14h0kFs0',
+      type: 'youtube'
+    },
+    {
+      id: 2,
+      title: 'Dance Challenge Edit',
+      description: 'High-energy dance compilation',
+      thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=200&fit=crop',
+      video: 'https://www.youtube.com/embed/j8ugNVXLz6E',
+      type: 'youtube'
+    },
+    {
+      id: 3,
+      title: 'Food Prep Aesthetic',
+      description: 'Satisfying cooking process video',
+      thumbnail: 'https://images.unsplash.com/photo-1495468595917-7ccc92183d63?w=300&h=200&fit=crop',
+      video: 'https://www.youtube.com/embed/ZVHMDkl0m6Y',
+      type: 'youtube'
+    },
+    {
+      id: 4,
+      title: 'Travel Vlog Snippet',
+      description: '30-second travel highlight',
+      thumbnail: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300&h=200&fit=crop',
+      video: 'https://www.youtube.com/embed/oFtkdywW_EM',
+      type: 'youtube'
+    }
+  ],
 
     'wedding-reel': [
     {

@@ -121,38 +121,9 @@ const folderWindowManager = {
 
   // Setup window dragging
   setupWindowDragging(windowElement) {
-    const header = windowElement.querySelector('.folder-window__header');
-    let isMouseDown = false;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    header.addEventListener('mousedown', (e) => {
-      // Don't drag if clicking on buttons
-      if (e.target.closest('.folder-window__controls')) return;
-
-      isMouseDown = true;
-      offsetX = e.clientX - windowElement.offsetLeft;
-      offsetY = e.clientY - windowElement.offsetTop;
-      header.style.cursor = 'grabbing';
-      this.bringToFront(windowElement);
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isMouseDown) return;
-
-      windowElement.style.left = (e.clientX - offsetX) + 'px';
-      windowElement.style.top = (e.clientY - offsetY) + 'px';
-    });
-
-    document.addEventListener('mouseup', () => {
-      isMouseDown = false;
-      header.style.cursor = 'grab';
-    });
-
-    // Click on window to bring to front
-    windowElement.addEventListener('mousedown', () => {
-      this.bringToFront(windowElement);
-    });
+    if (typeof makeDraggable === 'function') {
+      makeDraggable(windowElement, '.folder-window__header');
+    }
   },
 
   // Bring window to front

@@ -347,14 +347,11 @@ function calculate(value, display) {
   }
 }
 
-// App draggable
-$(function () {
-  $(".terminal").draggable();
-  $(".note").draggable();
-  $(".calculator").draggable();
-  $(".Vscode").draggable();
-  $(".spotlight_serach").draggable();
-  $(".maps").draggable();
+// App draggable (replacing jQuery UI with vanilla JS drag support)
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof initDraggableApps === 'function') {
+    initDraggableApps();
+  }
 });
 
 // Date and time
