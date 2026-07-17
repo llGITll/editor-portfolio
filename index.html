@@ -1,55 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Dharmik Vaja - Professional Video Editor & Creative Director specializing in luxury wedding films, teasers, and brand commercials." />
+    <meta name="keywords" content="Dharmik Vaja, video editor, wedding films, wedding highlights, commercial ads, storytelling edits, color grading, DaVinci Resolve, Premiere Pro" />
+    <meta name="author" content="Dharmik Vaja" />
+    <meta property="og:title" content="Dharmik Vaja | Video Portfolio" />
+    <meta property="og:description" content="Cinematic wedding cinematography, highlights, and commercial advertising portfolio." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dharmikvaja.com" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- ios support -->
       <link rel="apple-touch-icon" href="./icon/manifest/192x192.png" />
       <meta name="apple-mobile-web-app-status-bar" content="#DCE9E9" />
       <meta name="theme-color" content="#d1d1d1" />
         
-    <title>Dharmik Vaja | Portfolio</title>
+    <title>Dharmik Vaja | Video Editor & Creative Portfolio</title>
 
     <link
       rel="shortcut icon"
       type="image/png"
       href="./icon/manifest/512x512.png"
     />
-    <!-- Google fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&family=Roboto:wght@100&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Google Fonts: Optimized Variable Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Montserrat:wght@400;700&family=Roboto+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
     />
-    <!-- Jquery -->
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Local link -->
     <link rel="manifest" href="./manifest.json" />
@@ -57,9 +42,36 @@
     <link rel="stylesheet" href="./Css/mobile.css" />
     <link rel="stylesheet" href="./Css/apps.css" />
 
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Dharmik Vaja",
+      "image": "https://dharmikvaja.com/background/dv.png",
+      "@id": "https://dharmikvaja.com/#website",
+      "url": "https://dharmikvaja.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gujarat",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/dharmikvaja/",
+        "https://github.com/dharmikvaja"
+      ],
+      "serviceType": ["Video Editing", "Color Grading", "Cinematography", "Commercial Advertising"]
+    }
+    </script>
+
   </head>
   
   <body onload="digi(), calculateBattery()">
+    <!-- Screen-Reader Only H1 for SEO compliance -->
+    <h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+      Dharmik Vaja | Professional Video Editor & Creative Director Portfolio
+    </h1>
+
     <!-- Apple Boot Loader Screen -->
     <div id="boot-loader">
       <img src="./icon/apple-white.png" alt="Apple logo" class="boot-logo" />
@@ -332,6 +344,23 @@
       </ul>
     </div>
 
+    <!-- Desktop Sticky Note (Testimonials / Trust Signals) -->
+    <div class="desktop-sticky-note" id="desktopStickyNote">
+      <div class="sticky-note-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom:6px; margin-bottom:8px; font-weight:bold; font-size:12px;">
+        <span>📌 Testimonials</span>
+        <button onclick="document.getElementById('desktopStickyNote').style.display='none'" aria-label="Close note" style="cursor: pointer; color: #fff; opacity: 0.6; font-size: 14px; background:none; border:none; padding:0; line-height:1;">&times;</button>
+      </div>
+      <div class="sticky-note-content" id="stickyNoteContent" style="text-align:left;">
+        <p style="margin: 0; font-size: 11.5px; font-style: italic; line-height: 1.4;">"The color grading looks absolutely stunning! Highly recommend Dharmik for creative director edits."</p>
+        <span style="display: block; text-align: right; font-size: 10px; font-weight: bold; margin-top: 6px; opacity: 0.8;">— Sarah J., Netflix Ad Lead</span>
+      </div>
+      <div style="display: flex; justify-content: center; gap: 6px; margin-top: 8px;">
+        <span class="dot active" onclick="rotateStickyNote(0)" style="width:6px; height:6px; border-radius:50%; background:#fff; cursor:pointer; opacity:0.8; transition: opacity 0.2s;"></span>
+        <span class="dot" onclick="rotateStickyNote(1)" style="width:6px; height:6px; border-radius:50%; background:#fff; cursor:pointer; opacity:0.4; transition: opacity 0.2s;"></span>
+        <span class="dot" onclick="rotateStickyNote(2)" style="width:6px; height:6px; border-radius:50%; background:#fff; cursor:pointer; opacity:0.4; transition: opacity 0.2s;"></span>
+      </div>
+    </div>
+
     <div id="contextMenu" class="context-menu" style="opacity: 0; transition: 0.2s;">
       <ul>
         <li>
@@ -506,9 +535,9 @@
             activity</strong
           >
         </div>
-        <div class="child-launchpad" data-keywords="zoom,video,call">
-          <img src="./icon/Launchpad/zoom.png" alt="" />
-          <strong>Zoom</strong>
+        <div class="child-launchpad" onclick="openSystemApp('workflow'); document.getElementById('launchpad').style.display='none'; document.querySelector('.navbar').style.display='flex'; document.querySelector('.container__Window').style.display='flex';" data-keywords="Workflow,Pipeline,Process,Creative">
+          <img src="./icon/Launchpad/contacts.png" style="filter: hue-rotate(180deg);" alt="Workflow App Icon" />
+          <strong>Workflow</strong>
         </div>
       </div>
     </div>
@@ -551,6 +580,7 @@
               <svg viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"><path d="M4.871 3.553L9.37 8.098V3.553H4.871zm3.134 5.769L3.506 4.777v4.545h4.499z"></path><circle cx="6.438" cy="6.438" r="6.438" fill="black"></circle></svg>
             </button>
           </div>
+
           <div class="window__taskbar--right">
             
             <div class="Customize__icon hidden">
@@ -611,9 +641,13 @@
       </div>
       <!-- calculator -->
       <div class="calculator">
+        <div class="calculator-mode-tabs" style="display:flex; border-bottom:1px solid rgba(255,255,255,0.08); font-size:11px; font-weight:600; background:rgba(0,0,0,0.1);">
+          <button id="calc-tab-std" style="flex:1; padding:6px; color:#fff; background:rgba(255,255,255,0.12); border:none; cursor:pointer;">Standard</button>
+          <button id="calc-tab-est" style="flex:1; padding:6px; color:#aaa; border:none; cursor:pointer;">Estimate Rate</button>
+        </div>
         <div class="calculator__top">
           <div class="calculator__top--taskabr">
-            <button class="close-cal"></button>
+            <button class="close-cal" aria-label="Close calculator"></button>
             <button class="max-cal" disabled></button>
             <button class="min-cal" disabled></button>
           </div>
@@ -623,7 +657,7 @@
             value="0"
           />
         </div>
-        <div class="input">
+        <div class="input standard-calc-keys">
           <button value="C" class="button operator-2">C</button>
           <button value="+/-" class="button operator-2">+/-</button>
           <button value="%" class="button operator-2">%</button>
@@ -643,6 +677,24 @@
           <button value="0" class="button number large">0</button>
           <button value="." class="button number">.</button>
           <button value="=" class="button operator r-radius">=</button>
+        </div>
+        <div class="estimator-mode-container" style="display:none; padding:16px; box-sizing:border-box; height:calc(100% - 110px); flex-direction:column; justify-content:space-between; color:#fff; font-family:-apple-system, sans-serif;">
+          <div style="display:flex; flex-direction:column; gap:10px; text-align:left;">
+            <label style="font-size:10px; text-transform:uppercase; opacity:0.6; font-weight:bold;">Video Project Type</label>
+            <select id="est-video-type" style="width:100%; padding:6px; border-radius:4px; background:#222; border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:12px; height:28px;">
+              <option value="1500" data-name="Widescreen Trailer">Widescreen Trailer ($1,500)</option>
+              <option value="600" data-name="Vertical Reel">Vertical Reel ($600)</option>
+              <option value="2000" data-name="Commercial Ad Cut">Commercial Ad Cut ($2,000)</option>
+            </select>
+            
+            <label style="font-size:10px; text-transform:uppercase; opacity:0.6; font-weight:bold; margin-top:4px;">Add-on Production Specs</label>
+            <div style="display:flex; flex-direction:column; gap:6px; font-size:11px;">
+              <label style="display:flex; align-items:center; gap:6px; color:#fff;"><input type="checkbox" class="est-addon" value="300" data-name="Sound Design" checked> Sound Design & Mixing (+$300)</label>
+              <label style="display:flex; align-items:center; gap:6px; color:#fff;"><input type="checkbox" class="est-addon" value="400" data-name="Color Grading" checked> DaVinci Color Grading (+$400)</label>
+              <label style="display:flex; align-items:center; gap:6px; color:#fff;"><input type="checkbox" class="est-addon" value="500" data-name="Express Delivery"> 48-Hour Delivery (+$500)</label>
+            </div>
+          </div>
+          <button id="est-book-btn" style="background:#007ff7; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; width:100%; text-align:center; transition:background 0.2s; box-shadow: 0 4px 10px rgba(0,127,247,0.35);">Book this project</button>
         </div>
       </div>
     </div>
