@@ -39,9 +39,9 @@ const folderWindowManager = {
     window.innerHTML = `
       <div class="folder-window__header" style="--folder-color: ${folderData.color}">
         <div class="folder-window__controls">
-          <button class="window-btn close-btn" title="Close"></button>
-          <button class="window-btn minimize-btn" title="Minimize"></button>
-          <button class="window-btn maximize-btn" title="Maximize"></button>
+          <button class="window-btn close-btn" aria-label="Close window" title="Close"></button>
+          <button class="window-btn minimize-btn" aria-label="Minimize window" title="Minimize"></button>
+          <button class="window-btn maximize-btn" aria-label="Maximize window" title="Maximize"></button>
         </div>
         <div class="folder-window__title">
           <span class="folder-icon">${folderData.icon}</span>
@@ -51,7 +51,7 @@ const folderWindowManager = {
       </div>
 
       <div class="folder-window__content">
-        <div class="projects-grid">
+        <div class="projects-grid folder-${folderData.id}">
           ${projects.map(project => this.createProjectCard(project)).join('')}
         </div>
       </div>
@@ -70,8 +70,8 @@ const folderWindowManager = {
     return `
       <div class="project-card">
         <div class="project-card__image-container">
-          <img src="${project.thumbnail}" alt="${project.title}" class="project-card__image">
-          <button class="project-card__play-btn">
+          <img src="${project.thumbnail}" alt="${project.title}" class="project-card__image" loading="lazy">
+          <button class="project-card__play-btn" aria-label="Play video">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
               <path d="M8 5v14l11-7z"/>
             </svg>
@@ -80,7 +80,7 @@ const folderWindowManager = {
         <div class="project-card__info">
           <h3 class="project-card__title">${project.title}</h3>
           <p class="project-card__description">${project.description}</p>
-          <button class="project-card__view-btn" data-video="${project.video}" data-type="${project.type}">
+          <button class="project-card__view-btn" aria-label="Play video ${project.title}" data-video="${project.video}" data-type="${project.type}">
             Play Video
           </button>
         </div>
@@ -160,6 +160,15 @@ const folderWindowManager = {
 
   // Play video
   playVideo(videoUrl, videoType) {
+    if (videoType === 'email' || videoUrl.startsWith('mailto:')) {
+      window.location.href = videoUrl;
+      return;
+    }
+    if (videoType === 'link' || videoType === 'url') {
+      window.open(videoUrl, '_blank');
+      return;
+    }
+
     const modal = document.createElement('div');
     modal.className = 'video-player-modal';
     modal.innerHTML = `

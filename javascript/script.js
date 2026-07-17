@@ -111,15 +111,6 @@ function change_brightness() {
 }
 */
 
-// Spotlight
-function handleopen_spotlight() {
-  if (elements.spotlight_search.style.display === "none") {
-    elements.spotlight_search.style.display = "flex";
-  } else {
-    elements.spotlight_search.style.display = "none";
-  }
-}
-
 // Notes app function start
 function handleAdding() {
   const create_input = document.createElement("input");
@@ -129,7 +120,7 @@ function handleAdding() {
 
 function handleDeleting() {
   const inputChild = document.querySelector(".content__sidebar--notes input");
-  inputChild.remove();
+  if (inputChild) inputChild.remove();
   notesApp.content_typing.style.display = "none";
 }
 
@@ -139,16 +130,12 @@ function handleNotes() {
 
 // Notes app function end
 
-function handleMinimize(Minimize) {
-  Minimize.style.maxWidth = "80%";
-  Minimize.style.minWidth = "70%";
-  Minimize.style.height = "430px";
+function handleMinimize(windowEl) {
+  windowEl.classList.toggle("minimized");
 }
 
-function handleFullScreen(maximize) {
-  maximize.style.maxWidth = "95%";
-  maximize.style.minWidth = "95%";
-  maximize.style.height = "90%";
+function handleFullScreen(windowEl) {
+  windowEl.classList.toggle("maximized");
 }
 
 function close_window(close, point, appName) {
@@ -211,10 +198,14 @@ function handleOpenCal_lunchpad() {
 // Initialize container as visible so folder windows work
 launchpad.container.style.display = "flex";
 
-handleopen_spotlight();
 handleOpenLaunching();
 notesApp.adding.addEventListener("click", handleAdding);
+
+// Link yellow button minimize event listeners to their respective windows (Fixes terminal/calculator bug)
 calculatorApp.backfull.addEventListener("click", () =>
+  handleMinimize(calculatorApp.window)
+);
+terminalApp.backfull.addEventListener("click", () =>
   handleMinimize(terminalApp.window)
 );
 notesApp.backfull.addEventListener("click", () =>
@@ -279,7 +270,6 @@ calculatorApp.close.addEventListener("click", () =>
   )
 );
 calculatorApp.opening_l.addEventListener("click", handleOpenCal_lunchpad);
-elements.open_spotlight.addEventListener("click", handleopen_spotlight);
 launchpad.searchbox.addEventListener("input", handleLaunchpadSearch);
 elements.clockWrapper.addEventListener("click", () => {
   elements.widgetsPanel.classList.toggle("open");
@@ -287,7 +277,7 @@ elements.clockWrapper.addEventListener("click", () => {
 
 // Calculator code
 // select all the buttons
-const calculatorButtons = document.querySelectorAll(".input button");
+const calculatorButtons = document.querySelectorAll(".standard-calc-keys button");
 // select the <input type="text" class="display" disabled> element
 const calculatorDisplay = document.querySelector(".display");
 
@@ -298,6 +288,100 @@ calculatorButtons.forEach((button) => {
     console.log("btn");
   });
 });
+
+// Calculator tab switching & project estimation logic
+const tabStd = document.getElementById("calc-tab-std");
+const tabEst = document.getElementById("calc-tab-est");
+const calcKeys = document.querySelector(".standard-calc-keys");
+const estContainer = document.querySelector(".estimator-mode-container");
+
+if (tabStd && tabEst && calcKeys && estContainer) {
+  tabStd.addEventListener("click", () => {
+    tabStd.style.background = "rgba(255,255,255,0.12)";
+    tabStd.style.color = "#fff";
+    tabEst.style.background = "transparent";
+    tabEst.style.color = "#aaa";
+    calcKeys.style.display = "grid";
+    estContainer.style.display = "none";
+    calculatorDisplay.value = "0";
+  });
+
+  tabEst.addEventListener("click", () => {
+    tabEst.style.background = "rgba(255,255,255,0.12)";
+    tabEst.style.color = "#fff";
+    tabStd.style.background = "transparent";
+    tabStd.style.color = "#aaa";
+    calcKeys.style.display = "none";
+    estContainer.style.display = "flex";
+    calculateEstimate();
+  });
+
+  const estVideoType = document.getElementById("est-video-type");
+  const estAddons = document.querySelectorAll(".est-addon");
+
+  const calculateEstimate = () => {
+    let total = parseInt(estVideoType.value) || 0;
+    estAddons.forEach(checkbox => {
+      if (checkbox.checked) {
+        total += parseInt(checkbox.value) || 0;
+      }
+    });
+    calculatorDisplay.value = "$" + total;
+  };
+
+  estVideoType.addEventListener("change", calculateEstimate);
+  estAddons.forEach(addon => {
+    addon.addEventListener("change", calculateEstimate);
+  });
+
+  // Redirect to contact form with prefilled specifications
+  const estBookBtn = document.getElementById("est-book-btn");
+  if (estBookBtn) {
+    estBookBtn.addEventListener("click", () => {
+      const typeSelect = estVideoType.options[estVideoType.selectedIndex];
+      const typeName = typeSelect.getAttribute("data-name");
+      
+      let addonsSelected = [];
+      estAddons.forEach(checkbox => {
+        if (checkbox.checked) {
+          addonsSelected.push(checkbox.getAttribute("data-name"));
+        }
+      });
+
+      // Close calculator window
+      close_window(calculatorApp.window, calculatorApp.point, calculatorApp.app_name);
+      
+      // Open Booking Form window
+      if (typeof contactFormApp !== "undefined") {
+        contactFormApp.openInquiryWindow();
+        
+        setTimeout(() => {
+          const formType = document.getElementById("inquiryType");
+          const formBudget = document.getElementById("inquiryBudget");
+          const formBrief = document.getElementById("inquiryMessage");
+
+          if (formType) {
+            if (typeName.includes("Trailer")) formType.value = "Wedding Film";
+            else if (typeName.includes("Reel")) formType.value = "Social Reels";
+            else if (typeName.includes("Commercial")) formType.value = "Brand Ad";
+          }
+
+          if (formBudget) {
+            const totalVal = calculatorDisplay.value.replace("$", "");
+            const totalNum = parseInt(totalVal);
+            if (totalNum <= 3000) formBudget.value = "$1,000 - $3,000";
+            else if (totalNum <= 5000) formBudget.value = "$3,000 - $5,000";
+            else formBudget.value = "$5,000 - $10,000";
+          }
+
+          if (formBrief) {
+            formBrief.value = `Hi Dharmik,\n\nI would like to book a ${typeName} project.\n\nSpecs selected:\n- ${addonsSelected.join('\n- ')}\n\nCalculated estimate: ${calculatorDisplay.value}`;
+          }
+        }, 100);
+      }
+    });
+  }
+}
 
 function lastNumber(value) {
   return value.split(/[\+\-\*\/\%]/).pop();
@@ -383,70 +467,6 @@ function digi() {
   } else {
     elements.clockElement.innerHTML = hour + ":" + minute + " AM";
   }
-}
-
-let terminal_line_html = document.querySelector(".terminal_line").outerHTML;
-let path = "~";
-let dirName;
-let dirs = ["Desktop", "Downloads", "Music", "Documents"];
-
-function init_terminal_line() {
-  $(".cursor").keydown(function (e) {
-    if (e.keyCode === 13) {
-      console.log("hello");
-      e.preventDefault();
-      let command = $(this).text().trim(); // Use .text() for contenteditable elements
-      if (!command) return;
-
-      let command_output = "zsh: command not found: " + command + "<br>";
-
-      if (command.startsWith("cd ")) {
-        path = command.substring(3);
-        command_output = "";
-      } else if (command === "ls") {
-        command_output = dirs.join("\t");
-      } else if (command === "pwd") {
-        command_output = path + "/";
-      } else if (command.startsWith("mkdir ")) {
-        dirName = command.substring(6);
-        dirs.push(dirName);
-        command_output = "";
-      } else if (command === "rmdir") {
-        dirs.pop();
-        command_output = "";
-      } else if (command === "ps -aux") {
-        command_output = "CPU = 56% <br> MEMORY = 25% <br> DISK = 34%";
-      } else if (command.startsWith("cat ")) {
-        command_output =
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Fugiat nihil totam expedita sint necessitatibus quos ducimus.";
-      } else if (command.startsWith("du -hs ")) {
-        command_output = Math.floor(Math.random() * 100) + "GB";
-      }
-
-      $(this).removeAttr("contenteditable");
-      $(this).removeClass("cursor");
-      terminalApp.content.innerHTML += command_output; // Use .innerHTML to append string content
-      let new_terminal_line_html = terminal_line_html.replace("~", path);
-      terminalApp.content.innerHTML += new_terminal_line_html;
-      placeCaretAtEnd(document.querySelector(".cursor"));
-      init_terminal_line();
-    }
-  });
-}
-
-init_terminal_line();
-terminalApp.content.addEventListener("click", function () {
-  placeCaretAtEnd(document.querySelector(".cursor"));
-});
-
-function placeCaretAtEnd(el) {
-  el.focus();
-  var range = document.createRange();
-  range.selectNodeContents(el);
-  range.collapse(false);
-  var sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
 }
 
 // Right click to desktop

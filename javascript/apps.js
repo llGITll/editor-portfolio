@@ -91,18 +91,21 @@ document.addEventListener('DOMContentLoaded', () => {
   if (bootLoader && progressBar) {
     setTimeout(() => {
       progressBar.style.width = '100%';
-    }, 100);
+    }, 50);
 
     setTimeout(() => {
       bootLoader.style.opacity = '0';
       if (typeof initDraggableApps === 'function') {
         initDraggableApps();
       }
-    }, 2600);
+    }, 700);
 
     setTimeout(() => {
       bootLoader.style.display = 'none';
-    }, 3100);
+      if (typeof openSystemApp === 'function') {
+        openSystemApp('calculator');
+      }
+    }, 1100);
   }
 });
 
@@ -261,6 +264,11 @@ function openSystemApp(type) {
     appEl = document.querySelector('.terminal');
     pointEl = document.querySelector('#point-terminal');
     nameEl = document.querySelector('#Terminal');
+  } else if (type === 'workflow') {
+    if (typeof workflowApp !== 'undefined') {
+      workflowApp.openWorkflowWindow();
+    }
+    return;
   }
 
   if (appEl) {
@@ -706,12 +714,21 @@ const photosApp = {
         <h3 style="margin: 0; font-size: 15px; font-weight: 500; text-align: center;">Interactive Log vs Cinematic Color Grade (Slide to Compare)</h3>
         
         <div class="before-after-slider" style="position: relative; width: 100%; height: 320px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
-          <div class="slider-image before-img" style="position: absolute; top:0; left:0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop') center/cover no-repeat; filter: saturate(0.35) contrast(0.8) brightness(1.1) sepia(0.05);">
-            <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">RAW LOG Cam</div>
+          <!-- Raw Log Base Video -->
+          <video id="slider-video-log" autoplay loop muted playsinline style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.3) contrast(0.8) brightness(1.1);">
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          </video>
+          <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; z-index: 4; pointer-events: none;">RAW LOG Cam</div>
+
+          <!-- Cinematic Graded Layer (Clipped via sliding) -->
+          <div class="after-video-wrapper" style="position: absolute; top:0; left:0; width: 100%; height: 100%; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); z-index: 3; pointer-events: none;">
+            <video id="slider-video-grade" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; filter: saturate(1.4) contrast(1.15) sepia(0.05) hue-rotate(345deg); width: 600px; height: 320px; max-width: none;">
+              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            </video>
           </div>
-          <div class="slider-image after-img" style="position: absolute; top:0; left:0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop') center/cover no-repeat; filter: saturate(1.3) contrast(1.15) brightness(0.95) sepia(0.1) hue-rotate(350deg); clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
-            <div style="position: absolute; top: 12px; right: 12px; background: #007ff7; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase;">Cinematic Grade</div>
-          </div>
+          <div style="position: absolute; top: 12px; right: 12px; background: #007ff7; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; z-index: 4; pointer-events: none;">Cinematic Grade</div>
+
+          <!-- Slider Control Handle -->
           <div class="slider-bar" style="position: absolute; top:0; bottom:0; left:50%; width: 2px; background: #fff; z-index: 5; pointer-events: none; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 28px; height: 28px; background: #007ff7; border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.4);">
               <span class="material-icons-round" style="font-size: 18px; color: #fff;">unfold_more_double</span>
@@ -732,14 +749,48 @@ const photosApp = {
     if (!win) return;
 
     const sliderInput = win.querySelector('.slide-control');
-    const afterImg = win.querySelector('.after-img');
+    const afterWrapper = win.querySelector('.after-video-wrapper');
+    const afterVideo = win.querySelector('#slider-video-grade');
     const sliderBar = win.querySelector('.slider-bar');
+    const logVideo = win.querySelector('#slider-video-log');
 
     sliderInput.addEventListener('input', (e) => {
       const val = e.target.value;
-      afterImg.style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
+      afterWrapper.style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
       sliderBar.style.left = `${val}%`;
     });
+
+    // Synchronize play/pause and frame rate
+    let isSyncing = true;
+    const syncFrames = () => {
+      if (!isSyncing) return;
+      if (Math.abs(logVideo.currentTime - afterVideo.currentTime) > 0.05) {
+        afterVideo.currentTime = logVideo.currentTime;
+      }
+      requestAnimationFrame(syncFrames);
+    };
+
+    logVideo.addEventListener('play', () => {
+      afterVideo.play();
+      isSyncing = true;
+      syncFrames();
+    });
+
+    logVideo.addEventListener('pause', () => {
+      afterVideo.pause();
+      isSyncing = false;
+    });
+
+    logVideo.addEventListener('seeking', () => {
+      afterVideo.currentTime = logVideo.currentTime;
+    });
+
+    win.addEventListener('remove', () => {
+      isSyncing = false;
+    });
+
+    // Start initial sync
+    syncFrames();
   }
 };
 
@@ -808,11 +859,33 @@ Available Commands:<br>
   <b>contact</b>       - Displays developer contact info & email address<br>
   <b>social</b>        - Links to active social profiles<br>
   <b>hire</b>          - Display service rates and freelance booking pitch<br>
+  <b>workflow</b>      - Launches the creative pipeline workflow window<br>
+  <b>matrix</b>        - Simulates dropping green digital code blocks<br>
   <b>ls</b>            - Lists current desktop folders and project categories<br>
   <b>cat [folder]</b>   - Lists projects under folder, e.g. cat commercials<br>
   <b>clear</b>         - Clears the terminal screen buffer<br>
   <b>cd [dir]</b>      - Change directory path<br>
   <b>theme [light/dark]</b> - Switch desktop wallpaper theme<br>
+`;
+        break;
+      
+      case 'workflow':
+        output = 'Opening workflow & pipeline window...<br>';
+        setTimeout(() => {
+          if (typeof workflowApp !== 'undefined') {
+            workflowApp.openWorkflowWindow();
+          }
+        }, 200);
+        break;
+
+      case 'matrix':
+        output = `
+<span class="color_green">01010101 SYSTEM ACCESS GRANTED 01010101</span><br>
+<span class="color_green">10101010 DECRYPTION COMPLETE   10101010</span><br>
+<span class="color_green">00110011 USER: GUEST            00110011</span><br>
+<span class="color_green">----------------------------------------</span><br>
+dharmikvaja.com is built with pure ES6 JavaScript.<br>
+No heavy frames, no render-blocking templates.<br>
 `;
         break;
       
@@ -1024,6 +1097,7 @@ const spotlightSearchSystem = {
       } 
     },
     { title: 'Photos', type: 'Application', icon: '🖼️', action: () => photosApp.openPhotosWindow() },
+    { title: 'Workflow', type: 'Application', icon: '📋', action: () => workflowApp.openWorkflowWindow() },
     { title: 'Brand Reels', type: 'Folder', icon: '📂', action: () => folderWindowManager.openFolder('brand-commercials') },
     { title: 'Wedding Teasers', type: 'Folder', icon: '📂', action: () => folderWindowManager.openFolder('wedding-teaser') },
     { title: 'Wedding Highlights', type: 'Folder', icon: '📂', action: () => folderWindowManager.openFolder('wedding-Highlight') },
@@ -1748,6 +1822,7 @@ const appStoreApp = {
 // 11. SYSTEM PREFERENCES & WALlPAPER SETTING PANEL
 const settingsApp = {
   wallpapers: [
+    { name: 'Dharmik Portrait', url: './background/dv.png' },
     { name: 'Default Dark', url: './background/Porfolio-wallpaper.png' },
     { name: 'Lofi Purple', url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1400' },
     { name: 'Neon Cyber', url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1400' }
@@ -2078,6 +2153,160 @@ const mailApp = {
         ${email.body}
       </div>
     `;
+  }
+};
+
+// 13.5. CONTACT & BOOKING FORM APP
+const contactFormApp = {
+  openInquiryWindow() {
+    const contentHtml = `
+      <div class="inquiry-form-container" style="padding: 24px; color: #fff; background: #1e1e1e; height: 100%; box-sizing: border-box; overflow-y: auto; text-align: left; font-family: -apple-system, sans-serif;">
+        <h2 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 600;">Work Inquiry & Booking</h2>
+        <p style="margin: 0 0 20px 0; font-size: 12px; opacity: 0.7; line-height: 1.4;">Fill out your project specs below. Dharmik will reply within 24 hours.</p>
+        <form id="inquiryForm" style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; gap: 12px;">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+              <label style="font-size: 11px; text-transform: uppercase; opacity: 0.6; font-weight: bold;">Your Name</label>
+              <input type="text" id="inquiryName" required style="width: 100%; padding: 8px 12px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; outline: none; font-size: 13px;" />
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+              <label style="font-size: 11px; text-transform: uppercase; opacity: 0.6; font-weight: bold;">Your Email</label>
+              <input type="email" id="inquiryEmail" required style="width: 100%; padding: 8px 12px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; outline: none; font-size: 13px;" />
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+              <label style="font-size: 11px; text-transform: uppercase; opacity: 0.6; font-weight: bold;">Project Type</label>
+              <select id="inquiryType" style="width: 100%; padding: 8px 12px; border-radius: 6px; background: #2a2a2a; border: 1px solid rgba(255,255,255,0.15); color: #fff; outline: none; font-size: 13px; height: 35px; box-sizing: border-box;">
+                <option value="Wedding Film">Luxury Wedding Film</option>
+                <option value="Teaser / Highlight">Teaser / Highlight Cut</option>
+                <option value="Brand Ad">Commercial / Brand Ad</option>
+                <option value="Social Reels">Social Reels / Shorts</option>
+                <option value="Other">Custom Collaboration</option>
+              </select>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+              <label style="font-size: 11px; text-transform: uppercase; opacity: 0.6; font-weight: bold;">Estimated Budget</label>
+              <select id="inquiryBudget" style="width: 100%; padding: 8px 12px; border-radius: 6px; background: #2a2a2a; border: 1px solid rgba(255,255,255,0.15); color: #fff; outline: none; font-size: 13px; height: 35px; box-sizing: border-box;">
+                <option value="$1,000 - $3,000">$1,000 - $3,000</option>
+                <option value="$3,000 - $5,000">$3,000 - $5,000</option>
+                <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                <option value="$10,000+">$10,000+ (Premium Campaign)</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-size: 11px; text-transform: uppercase; opacity: 0.6; font-weight: bold;">Project Brief / Description</label>
+            <textarea id="inquiryMessage" required rows="4" placeholder="Describe your creative vision, scope of work, timeline, and requirements..." style="width: 100%; padding: 8px 12px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; outline: none; font-size: 13px; resize: none; font-family: sans-serif; box-sizing: border-box;"></textarea>
+          </div>
+          <button type="submit" style="margin-top: 6px; padding: 10px; border-radius: 6px; background: #007ff7; color: #fff; font-weight: bold; border: none; cursor: pointer; text-align: center; transition: background 0.2s; font-size: 13px;">Send Work Proposal</button>
+        </form>
+      </div>
+    `;
+
+    const win = createSystemWindow('contact-app-window', 'Inquiry & Booking', '✉️', 540, 460, contentHtml);
+    if (!win) return;
+
+    const form = win.querySelector('#inquiryForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = win.querySelector('#inquiryName').value;
+      const email = win.querySelector('#inquiryEmail').value;
+      const type = win.querySelector('#inquiryType').value;
+      const budget = win.querySelector('#inquiryBudget').value;
+      const msg = win.querySelector('#inquiryMessage').value;
+
+      // Simulate submission
+      console.log('Form submitted:', { name, email, type, budget, msg });
+      
+      const contentPane = win.querySelector('.folder-window__content');
+      contentPane.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; gap: 16px; padding: 20px; background: #1e1e1e; color:#fff; box-sizing:border-box;">
+          <span style="font-size: 48px; animation: bounce 1.5s infinite;">🚀</span>
+          <h3 style="margin:0; font-size: 18px; font-weight: bold; color: #32d74b;">Proposal Sent Successfully!</h3>
+          <p style="margin:0; font-size: 13px; max-width: 320px; opacity: 0.8; line-height: 1.5;">Thank you, ${name}! Your inquiry for a ${type} has been sent. Dharmik will get in touch with you at ${email}.</p>
+          <button onclick="document.getElementById('contact-app-window').classList.add('closing'); setTimeout(()=>document.getElementById('contact-app-window').remove(), 300);" style="margin-top: 10px; background: rgba(255,255,255,0.12); color: #fff; padding: 8px 20px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border:1px solid rgba(255,255,255,0.2);">Close Window</button>
+        </div>
+      `;
+    });
+  }
+};
+
+// TESTIMONIALS ROTATOR
+const testimonials = [
+  { text: '"The color grading looks absolutely stunning! Highly recommend Dharmik for creative director edits."', author: '— Sarah J., Netflix Ad Lead' },
+  { text: '"Oh my gosh, we loved the Haldi video edit so much! The transition cuts to the music beats are perfect."', author: '— Krupal & Krupali' },
+  { text: '"The store advertisement video edited for Saurashtra Refrigeration is performing exceptionally well!"', author: '— Jiten Patel, Director' }
+];
+let activeTestimonialIdx = 0;
+
+function rotateStickyNote(idx) {
+  const content = document.getElementById('stickyNoteContent');
+  const dots = document.querySelectorAll('.desktop-sticky-note .dot');
+  if (!content || dots.length === 0) return;
+
+  if (idx !== undefined) activeTestimonialIdx = idx;
+  else activeTestimonialIdx = (activeTestimonialIdx + 1) % testimonials.length;
+
+  content.innerHTML = `
+    <p style="margin: 0; font-size: 11.5px; font-style: italic; line-height: 1.4;">${testimonials[activeTestimonialIdx].text}</p>
+    <span style="display: block; text-align: right; font-size: 10px; font-weight: bold; margin-top: 6px; opacity: 0.8;">${testimonials[activeTestimonialIdx].author}</span>
+  `;
+
+  dots.forEach((dot, index) => {
+    if (index === activeTestimonialIdx) {
+      dot.classList.add('active');
+      dot.style.opacity = '0.8';
+    } else {
+      dot.classList.remove('active');
+      dot.style.opacity = '0.4';
+    }
+  });
+}
+
+// Auto-rotate every 6 seconds
+setInterval(() => {
+  rotateStickyNote();
+}, 6000);
+
+// Creative pipeline workflow App
+const workflowApp = {
+  openWorkflowWindow() {
+    const contentHtml = `
+      <div class="workflow-container" style="padding: 24px; color: #fff; background: #1a1a1a; height: 100%; box-sizing: border-box; overflow-y: auto; text-align: left; font-family: -apple-system, sans-serif;">
+        <h2 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 600; color:#007ff7;">Creative Workflow & Pipeline</h2>
+        <p style="margin: 0 0 24px 0; font-size: 12px; opacity: 0.7; line-height: 1.4;">My step-by-step editing process to deliver premium films on deadline.</p>
+        
+        <div class="workflow-steps" style="display:flex; flex-direction:column; gap:16px; position:relative; padding-left:20px; border-left:2px solid rgba(255,255,255,0.1);">
+          <div class="workflow-step" style="position:relative;">
+            <div style="position:absolute; left:-27px; top:3px; width:10px; height:10px; border-radius:50%; background:#007ff7; border:3px solid #1a1a1a;"></div>
+            <h3 style="margin:0; font-size:13px; font-weight:600; color:#007ff7;">1. Asset Intake & Briefing</h3>
+            <p style="margin:4px 0 0 0; font-size:11px; opacity:0.7; line-height:1.4;">Secure raw footage transfer (Dropbox/Frame.io) and align on creative references, storyboard drafts, and timeline constraints.</p>
+          </div>
+          <div class="workflow-step" style="position:relative;">
+            <div style="position:absolute; left:-27px; top:3px; width:10px; height:10px; border-radius:50%; background:#007ff7; border:3px solid #1a1a1a;"></div>
+            <h3 style="margin:0; font-size:13px; font-weight:600; color:#007ff7;">2. Assembly & Pacing Cut</h3>
+            <p style="margin:4px 0 0 0; font-size:11px; opacity:0.7; line-height:1.4;">Select top-tier A-roll clips, establish narrative structure, and sync primary layout beats to the backing track.</p>
+          </div>
+          <div class="workflow-step" style="position:relative;">
+            <div style="position:absolute; left:-27px; top:3px; width:10px; height:10px; border-radius:50%; background:#007ff7; border:3px solid #1a1a1a;"></div>
+            <h3 style="margin:0; font-size:13px; font-weight:600; color:#007ff7;">3. Dialogue & Audio Cleanups</h3>
+            <p style="margin:4px 0 0 0; font-size:11px; opacity:0.7; line-height:1.4;">Level speaker voice tracks, remove ambient noise/hisses (Audition), and layer custom ambient room soundscapes.</p>
+          </div>
+          <div class="workflow-step" style="position:relative;">
+            <div style="position:absolute; left:-27px; top:3px; width:10px; height:10px; border-radius:50%; background:#ffbd2e; border:3px solid #1a1a1a;"></div>
+            <h3 style="margin:0; font-size:13px; font-weight:600; color:#ffbd2e;">4. Color Grading (DaVinci Resolve)</h3>
+            <p style="margin:4px 0 0 0; font-size:11px; opacity:0.7; line-height:1.4;">Construct nodes curves, balance custom warmth profiles, and perform micro exposure edits to accent client skin tones.</p>
+          </div>
+          <div class="workflow-step" style="position:relative;">
+            <div style="position:absolute; left:-27px; top:3px; width:10px; height:10px; border-radius:50%; background:#28c940; border:3px solid #1a1a1a;"></div>
+            <h3 style="margin:0; font-size:13px; font-weight:600; color:#28c940;">5. Final Revision & ProRes Delivery</h3>
+            <p style="margin:4px 0 0 0; font-size:11px; opacity:0.7; line-height:1.4;">Perform frame-by-frame review via Frame.io for client notes, delivering final master footage in ProRes.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    createSystemWindow('workflow-app-window', 'Creative Pipeline', '📋', 480, 420, contentHtml);
   }
 };
 

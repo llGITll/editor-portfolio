@@ -7,38 +7,45 @@ const desktopFoldersManager = {
   folders: [
     {
       id: 'brand-commercials',
-      name: 'Brand Reels',
+      name: 'Brand Commercials',
       icon: '💼',
       color: '#007ff7',
       description: 'Commercial advertisement videos'
     },
     {
       id: 'wedding-teaser',
-      name: 'wedding-teaser',
+      name: 'Wedding Teasers',
       icon: '🎥',
       color: '#ff5f57',
       description: 'Cinematic wedding cinematography'
     },
     {
       id: 'wedding-Highlight',
-      name: 'wedding-Highlight',
+      name: 'Wedding Highlights',
       icon: '⚡',
       color: '#ffbd2e',
       description: 'Short-form vertical content'
     },
     {
       id: 'wedding-reel',
-      name: 'wedding-reel',
+      name: 'Wedding Reels',
       icon: '🎞️',
       color: '#28c940',
       description: 'Wedding Reels and Stories'
     },
     {
       id: 'case-studies-soon',
-      name: 'case-studies-soon',
+      name: 'Case Studies',
       icon: '📂',
       color: '#9c5ffd',
       description: 'Project portfolio case studies'
+    },
+    {
+      id: 'contact-me',
+      name: 'Contact & Booking',
+      icon: '✉️',
+      color: '#007ff7',
+      description: 'Contact and Booking Details'
     }
   ],
 
@@ -91,30 +98,25 @@ const desktopFoldersManager = {
     const folders = document.querySelectorAll('.desktop-folder');
     
     folders.forEach(folderEl => {
-      let lastClickTime = 0;
-      const doubleclickDelay = 300;
-
       folderEl.addEventListener('click', (e) => {
-        const currentTime = new Date().getTime();
-        const timeDiff = currentTime - lastClickTime;
-
-        if (timeDiff < doubleclickDelay) {
-          // Double click - open folder
-          const folderId = folderEl.getAttribute('data-folder-id');
-          folderWindowManager.openFolder(folderId);
-          e.preventDefault();
+        const folderId = folderEl.getAttribute('data-folder-id');
+        this.selectFolder(folderEl);
+        
+        if (folderId === 'contact-me') {
+          if (typeof contactFormApp !== 'undefined') {
+            contactFormApp.openInquiryWindow();
+          } else {
+            folderWindowManager.openFolder(folderId);
+          }
         } else {
-          // Single click - select folder
-          this.selectFolder(folderEl);
+          folderWindowManager.openFolder(folderId);
         }
-
-        lastClickTime = currentTime;
+        e.preventDefault();
       });
 
       // Right-click context menu (optional)
       folderEl.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        // Could add context menu here
       });
     });
   },
@@ -134,5 +136,4 @@ const desktopFoldersManager = {
 };
 
 // Initialize desktop folders immediately since DOM is ready
-// (This script loads after DOM parsing is complete, so DOMContentLoaded has already fired)
 desktopFoldersManager.init();
